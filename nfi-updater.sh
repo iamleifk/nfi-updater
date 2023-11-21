@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Go to script directory
+cd "$(dirname "$0")"
+
 # Load environment variables
 source .env
 
@@ -46,8 +49,8 @@ if [ "$MODE" == "tags" ]; then
         keyboard="{\"inline_keyboard\":[[{\"text\":\"Changes\", \"url\":\"${GIT_URL}/compare/${current_tag}...${latest_tag}\"},{\"text\":\"Backtesting\", \"url\":\"${GIT_URL}/commit/${latest_tag_commit}\"}]]}"
         curl -s --data "text=${message}" --data "reply_markup=${keyboard}" --data "chat_id=$TG_CHAT_ID" --data "parse_mode=markdown" "https://api.telegram.org/bot${TG_TOKEN}/sendMessage"
     fi
-
-elif [ "$MODE" == "latest" ]; then
+    exit 0
+else
     # Get current commit
     current_commit=$(git rev-parse --short HEAD)
 
@@ -68,7 +71,5 @@ elif [ "$MODE" == "latest" ]; then
         keyboard="{\"inline_keyboard\":[[{\"text\":\"Changes\", \"url\":\"${GIT_URL}/commit/${latest_commit}\"}]]}"
         curl -s --data "text=${message}" --data "reply_markup=${keyboard}" --data "chat_id=$TG_CHAT_ID" --data "parse_mode=markdown" "https://api.telegram.org/bot${TG_TOKEN}/sendMessage"
     fi
-else
-    echo "Unsupported mode: $MODE. Supported modes are 'tags' and 'latest'."
-    exit 1
+    exit 0
 fi
