@@ -38,8 +38,7 @@ if [ "$MODE" == "tags" ]; then
         git checkout tags/$latest_tag -b $latest_tag || git checkout $latest_tag 
 
         # Call function to copy files
-        copy_files "$FT_ALPHA_DIR" "$FT_ALPHA_PAIRLIST" "$FT_ALPHA_BLACKLIST"
-        copy_files "$FT_BETA_DIR" "$FT_BETA_PAIRLIST" "$FT_BETA_BLACKLIST"
+        copy_files "$FT_DIR" "$FT_PAIRLIST" "$FT_BLACKLIST"
 
         # Get tag to which the latest tag is pointing
         latest_tag_commit=$(git rev-list -n 1 tags/${latest_tag})
@@ -63,8 +62,7 @@ else
 
     if [ "$latest_commit" != "$current_commit" ]; then
         # Call function to copy files
-        copy_files "$FT_ALPHA_DIR" "$FT_ALPHA_PAIRLIST" "$FT_ALPHA_BLACKLIST"
-        copy_files "$FT_BETA_DIR" "$FT_BETA_PAIRLIST" "$FT_BETA_BLACKLIST"
+        copy_files "$FT_DIR" "$FT_PAIRLIST" "$FT_BLACKLIST"
 
         # Compose and send the message
         message="NFI is updated to commit: *${latest_commit}*"
